@@ -1,0 +1,12 @@
+{
+  "name": "social-network-api",
+  "version": "1.0.0",
+  "description": "This is the Social Netork API for the OSU Flex Web Development Bootcamp Module 18 Challenge.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Gabriel Morrow",
+  "license": "MIT"
+}
