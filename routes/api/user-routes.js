@@ -1,26 +1,26 @@
 const router = require('express').Router();
+const {
+    getAllUsers, 
+    getOneUser,
+    createUser,
+    updateUser,
+    deleteUser,
+    addFriendToUser,
+    deleteFriendFromUser
+} = require('../../controllers/user-controller.js')
+
+
+
+const User = require('../../models/User.js');
+const Thought = require('../../models/Thought.js')
+
 
 // This GET route gets all users.
-router.get('/', (req, res) => {
-  
-});
-
+router.route('/').get(getAllUsers).post(createUser);
 // This GET route gets a user by ID.
-router.get('/:id', (req, res) => {
-  
-});
+router.route('/:id').get(getOneUser).put(updateUser).delete(deleteUser);
 
-// This POST route adds a new user.
-router.post('/', (req, res) => {
+router.route('/:userId/friends/:friendId').post(addFriendToUser);
+router.route('/:userId/friends/:friendId').delete(deleteFriendFromUser);
 
-});
-
-// This PUT route updates a user by ID.
-router.put('/:id', (req, res) => {
-  
-});
-
-//This DELETE route deletes a user by ID.
-router.delete('/:id', (req, res) => {
-
-});
+module.exports = router;

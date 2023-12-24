@@ -1,26 +1,24 @@
 const router = require('express').Router();
 
-// This GET route gets all thoughts.
-router.get('/', (req, res) => {
-  
-});
+const {
 
-// This GET route gets a thought by ID.
-router.get('/:id', (req, res) => {
-  
-});
+    getAllThoughts,
+    getOneThought,
+    createThought,
+    updateThought,
+    deleteThought,
+    addReactionToThought,
+    DeleteReactionFromThought
 
-// This POST route adds a new thought.
-router.post('/', (req, res) => {
+} = require('../../controllers/thought-contriller.js');
 
-});
+// This GET route gets all users.
+router.route('/').get(getAllThoughts).post(createThought);
+// This GET route gets a user by ID.
+router.route('/:id').get(getOneThought).put(updateThought).delete(deleteThought);
 
-// This PUT route updates a thought by ID.
-router.put('/:id', (req, res) => {
-  
-});
+router.route('/:thoughtId/reactions/').post(addReactionToThought);
+router.route('/:thoughtId/reactions/:reactionId').delete(DeleteReactionFromThought);
 
-//This DELETE route deletes a thought by ID.
-router.delete('/:id', (req, res) => {
 
-});
+module.exports = router;
