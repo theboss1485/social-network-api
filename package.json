@@ -11,8 +11,11 @@
   "author": "Gabriel Morrow",
   "license": "MIT",
   "dependencies": {
+    "day": "^0.0.2",
     "dotenv": "^16.3.1",
+    "eventemitter3": "^5.0.1",
     "express": "^4.18.2",
+    "iodash": "^0.0.1-security",
     "mongoose": "^8.0.3"
   }
 }

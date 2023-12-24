@@ -20,9 +20,11 @@ connection.once('open', async () => {
 
       await connection.dropCollection('thoughts');
     }
+    
+    await seedUsers();
 
     await seedThoughts();
-    await seedUsers();
+   
 
     console.log("seeding complete!!");
     process.exit();
