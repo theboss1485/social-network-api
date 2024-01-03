@@ -1,5 +1,9 @@
-# social-network-api
-This repository contains the Social Network API for the Module 18 Challenge of the OSU Flex Web Development Bootcamp
+# Social Network API
+
+## Description
+
+My motivation for building this project was to gain experience with NoSQL and Mongoose.  I built this project so that I could practice creating my own API without using a SQL database.  I also wanted to practice building custom error messages for the API.  This project solves the problem of a web developer needing a social media API for his or her own website.  The intent would be for the developer to build a website and use this API, so that the developer doesn't need to create one himself (or herself).  In this project, I learned how to build the various routes for an API, and I also took on the optional task of adding custom error messages for various scenarios that the application may encounter, such as a developer providing a user ID that doesn't match any users in the database.
+Provide a short description explaining the what, why, and how of your project. Use the following questions as a guide:
 
 ## Note To Grader
 
