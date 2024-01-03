@@ -8,7 +8,7 @@ function handleDifferentThoughtErrorTypes(res, error, reaction = false){
 
         let fragment = "";
 
-        if(reaction = true){
+        if(reaction === true){
 
             fragment = "or reaction ID";
         }
@@ -16,7 +16,7 @@ function handleDifferentThoughtErrorTypes(res, error, reaction = false){
         if(fragment !== ""){
 
             errorMessage = `Either the thought ID ${fragment} you provided doesn't match any records,` + 
-                           `or the reaction ID you provided isn't in the provided thought's reaction list. `
+                           ` or the reaction ID you provided isn't in the provided thought's reaction list. `
 
             res.status(404).json({errorMessage: errorMessage});
 

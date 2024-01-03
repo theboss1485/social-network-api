@@ -6,6 +6,7 @@ const handleDifferentUserErrorTypes = require('../utils/handleDifferentUserError
 
 const iodash = require('lodash');
 
+// This function gets all the users from the Mongoose database.
 async function getAllUsers(req, res){
 
     try {
@@ -20,6 +21,7 @@ async function getAllUsers(req, res){
     }
 }
 
+// This function gets one user from the Mongoose database, using the user's ID.
 async function getOneUser(req, res){
 
     try {
@@ -34,6 +36,7 @@ async function getOneUser(req, res){
         
         } else {
 
+            // If the user ID doesn't match any existing thought IDs, the application throws an error.
             throw new Error("Invalid user ID");
         }
         
@@ -43,6 +46,7 @@ async function getOneUser(req, res){
     }
 }
 
+// This function creates a user and saves it to the database.
 async function createUser(req, res){
 
     try {
@@ -59,6 +63,7 @@ async function createUser(req, res){
         
         } else {
 
+            // If the user left a username or email address out of the request body, the application throws an error.
             throw new Error("Missing Info - Email and Username");
         }
 
@@ -68,6 +73,7 @@ async function createUser(req, res){
     }
 }
 
+// This function creates a user and saves it to the database.
 async function updateUser(req, res){
 
     let updatedUser = undefined;
@@ -149,7 +155,7 @@ async function deleteUser(req, res){
             let deletedThoughts = await Thought.find({username: deletedUser.username});
             let thoughtDeletionResult = await Thought.deleteMany({username: deletedUser.username});
 
-            if(deletedThoughts){
+            if(deletedThoughts.length !== 0){
 
                 res.status(200).json({message: "User and associated thoughts deleted successfully", deletedUser: deletedUser, 
                                       deletedThoughts: deletedThoughts, thoughtDeletionResult: thoughtDeletionResult});
