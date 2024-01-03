@@ -4,22 +4,23 @@ const formatDate = require('../utils/formatDate.js')
 const reactionSchema = new mongoose.Schema(
     
     {
-        reactionId: {type: mongoose.Types.ObjectId, default: new mongoose.Types.ObjectId()},
+        /* The arrow function by the default keyword ensures that a new ObjectId is generated each
+        time a new reaction is created.  The Xpert Learning Assistant told me about this. */
+        reactionId: {type: mongoose.Types.ObjectId, default: () => new mongoose.Types.ObjectId()},
         reactionBody: {type: String, required: true, maxLength: 280},
         username: {type: String, required: true},
         createdAt: {type: Date,
 
             default: Date.now,
-            get: function (){
-                
-                return new Date().toLocaleDateString();
-            }
         }
     },
     {
-        id: false
+        id: false,
+        createdAt: false
     }
 );
+
+reactionSchema.set('toJSON', { virtuals: true });
 
 reactionSchema.set('_id', false); 
 
@@ -47,7 +48,7 @@ const thoughtSchema = new mongoose.Schema(
         reactions: [reactionSchema]
     }, 
     {
-        id: false
+        id: false,
     }
 );
 
@@ -56,7 +57,6 @@ thoughtSchema.virtual('createdAtFormatted').get(function(){
     return formatDate(this.createdAt);
 });
 
-thoughtSchema.set('toJSON', { getters: true });
 thoughtSchema.set('toJSON', { virtuals: true });
 
 

@@ -1,3 +1,4 @@
+/* This file defines and exports the connection to the Mongoose database. */
 const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://127.0.0.1:27017/myfirstmongooseapp');

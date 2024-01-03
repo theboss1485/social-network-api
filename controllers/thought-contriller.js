@@ -3,6 +3,7 @@ const handleDifferentThoughtErrorTypes = require('../utils/handleDifferentThough
 const Thought = require('../models/Thought.js');
 const User = require('../models/User.js');
 
+// This function gets all the thoughts from the Mongoose database.
 async function getAllThoughts(req, res){
 
     try {
@@ -17,6 +18,7 @@ async function getAllThoughts(req, res){
     }
 }
 
+// This function gets one thought from the Mongoose database, using the thought's ID.
 async function getOneThought(req, res){
 
     try {
@@ -30,6 +32,7 @@ async function getOneThought(req, res){
         
         } else {
 
+            // If the thought ID doesn't match any existing thought IDs, the application throws an error.
             throw new Error("Invalid thought ID");
         }
         
@@ -40,6 +43,7 @@ async function getOneThought(req, res){
     }
 }
 
+// This function creates a thought and saves it to the database.
 async function createThought(req, res){
 
     try {
@@ -72,11 +76,13 @@ async function createThought(req, res){
 
             } else {
 
+                // If the provided username doesn't match any existing usernames, the application throws an error.
                 throw new Error("Invalid username");
             }
             
         } else {
-
+            
+            // If the user left a username or thought text out of the request body, the application throws an error.
             throw new Error("Invalid thought text or username");
         }
 
@@ -89,6 +95,7 @@ async function createThought(req, res){
     }
 }
 
+// This function updates a thought using its ID, and saves the thought to the database.
 async function updateThought(req, res){
 
     try {
@@ -114,11 +121,13 @@ async function updateThought(req, res){
             
             } else {
 
+                // If the thought ID doesn't match any existing thought IDs, the application throws an error.
                 throw new Error("Invalid thought ID");
             }
 
         } else {
 
+            // If the user left thought text out of the request body, the application throws an error.
             throw new Error("Invalid thought text");
         }
     
@@ -128,6 +137,7 @@ async function updateThought(req, res){
     }
 }
 
+// This function deletes a thought, using its ID.
 async function deleteThought(req, res){
 
     try {
@@ -136,12 +146,10 @@ async function deleteThought(req, res){
 
         if(deletedThought){
 
-            
-
             await User.findOneAndUpdate(
 
                 { username: deletedThought.username},
-                { $pull: { thoughts: deletedThought.id } },
+                { $pull: { thoughts: deletedThought._id } },
                 { new: true }
             );
 
@@ -149,6 +157,7 @@ async function deleteThought(req, res){
             
         } else {
 
+            // If the thought ID doesn't match any existing thought IDs, the application throws an error.
             throw new Error("Invalid thought ID");
         }
         
@@ -158,6 +167,7 @@ async function deleteThought(req, res){
     }
 }
 
+// This function adds a reaction to a thought and saves the thought to the database.
 async function addReactionToThought(req, res){
 
     try {
@@ -176,11 +186,13 @@ async function addReactionToThought(req, res){
             
             } else {
 
+                // If the user left the reaction text out of the request body, the application throws an error.
                 throw new Error("Invalid reaction body");
             } 
 
         } else {
 
+            // If the thought ID doesn't match any existing thought IDs, the application throws an error.
             throw new Error("Invalid thought ID");
         }
 
@@ -190,6 +202,7 @@ async function addReactionToThought(req, res){
     }
 }
 
+// This function deletes a reaction from a thought by the reaction's ID.
 async function DeleteReactionFromThought(req, res){
 
     try{
@@ -201,10 +214,12 @@ async function DeleteReactionFromThought(req, res){
 
             thought.reactions = thought.reactions.filter((reaction) => reaction !== reactionToBeDeleted);
             let thoughtWithReactionDeleted = await thought.save();
-            res.status(200).json({message: "Reaction Deletion successful", thoughtWithReactionDeleted: thoughtWithReactionDeleted}, );
+            res.status(200).json({message: "Reaction deletion successful", thoughtWithReactionDeleted: thoughtWithReactionDeleted}, );
 
         } else {
 
+            /* If the thought ID doesn't match any existing thought IDs, or the reaction ID doesn't match 
+            any existing reaction IDs, the application throws an error.*/
             throw new Error("Invalid thought ID or reaction ID");
         }
 
