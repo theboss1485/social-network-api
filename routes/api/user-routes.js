@@ -2,7 +2,9 @@
 putting the logic for each one inside an appropriately named method, rather than inside
 each route itself.*/
 const router = require('express').Router();
+
 const {
+    
     getAllUsers, 
     getOneUser,
     createUser,

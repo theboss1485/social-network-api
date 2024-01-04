@@ -34,7 +34,6 @@ async function getOneThought(req, res){
             // If the thought ID doesn't match any existing thought IDs, the application throws an error.
             throw new Error("Invalid thought ID");
         }
-        
     
     } catch (error) {
 
@@ -78,10 +77,7 @@ async function createThought(req, res){
             throw new Error("Invalid thought text or username");
         }
 
-        
-
     } catch (error) {
-
 
         handleDifferentThoughtErrorTypes(res, error);
     }
@@ -177,7 +173,6 @@ async function addReactionToThought(req, res){
                 username = req.body.username;
             
             } else {
-                console.log("Thought", thought);
     
                 username = thought.username;
             }

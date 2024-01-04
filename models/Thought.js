@@ -20,6 +20,7 @@ const reactionSchema = new mongoose.Schema(
         createdAt: false
     }
 );
+
 // Here, I am turning on virtuals and disabling the _id column for the reaction schema.
 reactionSchema.set('toJSON', { virtuals: true });
 reactionSchema.set('_id', false); 
@@ -35,8 +36,9 @@ const thoughtSchema = new mongoose.Schema(
     
     {
         thoughtText: {type: String, 
-                    required: true,
-                    maxLength: 280},
+                      required: true,
+                      minlength: 1,
+                      maxLength: 280},
 
         // The Xpert Learning Assistant AI told me how to format the date.
         createdAt: {type: Date,
@@ -44,7 +46,7 @@ const thoughtSchema = new mongoose.Schema(
                 },
 
         username: {type: String,
-                required: true
+                   required: true
                 },
 
         reactions: [reactionSchema]

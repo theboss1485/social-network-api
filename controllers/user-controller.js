@@ -1,7 +1,6 @@
 const User = require('../models/User.js');
 const Thought = require('../models/Thought.js');
 const mongoose = require('mongoose');
-const { CastError } = mongoose.Error;
 const handleDifferentUserErrorTypes = require('../utils/handle-different-user-error-types.js');
 
 const iodash = require('lodash');
@@ -115,8 +114,6 @@ async function updateUser(req, res){
 
                 updatedUser = await User.findOne({_id: req.params.id});
 
-            
-
                 if(updatedThoughts.length !== 0){
 
                     res.status(200).json({message: "User and thought update successful", updatedUser: updatedUser, updatedThoughts: updatedThoughts});
@@ -195,8 +192,6 @@ async function addFriendToUser(req, res){
         friend = await User.findOne({_id: req.params.friendId});
         match = user.friends.find((friend) => friend.toString() === req.params.friendId);
 
-
-        
         if(user && friend){
 
             if(req.params.userId === req.params.friendId){
@@ -250,7 +245,6 @@ async function deleteFriendFromUser(req, res){
             }
 
             let updatedFriendsList = user.friends.filter((friend) => friend.toString() !== friendToBeDeleted._id.toString());
-
 
             /* The Xpert Learning Assistant told me about the Iodash package.  I am using it to compare if the user's friend list is equal to the user's
             friend list without the friend to be deleted.  If the two are equal, it means the friend didn't exist on the user's friend list in the first place.*/

@@ -6,9 +6,9 @@ const userSchema = new mongoose.Schema(
     {
 
         username: {type: String, 
-                required: true, 
-                unique: true,
-                trim: true},
+                   required: true, 
+                   unique: true,
+                   trim: true},
         email: {type: String,
                 required: true,
                 unique: true,
@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema(
 
                         return /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(value);
                     },
+                    
                     message: "You have entered an invalid email address.  Email addresses must be entered in the format test@example.com."
                 }
             

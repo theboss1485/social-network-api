@@ -24,9 +24,7 @@ connection.once('open', async () => {
     }
     
     await seedUsers();
-
     await seedThoughts();
-   
 
     console.log("seeding complete!!");
     process.exit();

@@ -15,7 +15,6 @@ function handleDifferentUserErrorTypes(res, error, friend = false){
         } 
 
         errorMessage = `The user ID${fragment} you provided doesn't match any records.`
-
         res.status(404).json({errorMessage: errorMessage});
     
     } else if (error.code === 11000){
@@ -46,8 +45,9 @@ function handleDifferentUserErrorTypes(res, error, friend = false){
 
     } else if (error.name === "ValidationError") {
 
-        res.status(422).json(error);
         console.log(error);
+        errorMessage = "You have entered an invalid email address. Email addresses must be entered in the format someone@example.com"
+        res.status(422).json({errorMessage: errorMessage});
 
     /*This is a generic error message for any user-related scenarios that I didn't implement.*/
     } else {
