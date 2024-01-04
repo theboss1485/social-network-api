@@ -1,3 +1,6 @@
+/* This file makes it more self-explanatory as to what each one user route does, by
+putting the logic for each one inside an appropriately named method, rather than inside
+each route itself.*/
 const router = require('express').Router();
 const {
     getAllUsers, 
@@ -9,17 +12,8 @@ const {
     deleteFriendFromUser
 } = require('../../controllers/user-controller.js')
 
-
-
-const User = require('../../models/User.js');
-const Thought = require('../../models/Thought.js')
-
-
-// This GET route gets all users.
 router.route('/').get(getAllUsers).post(createUser);
-// This GET route gets a user by ID.
 router.route('/:id').get(getOneUser).put(updateUser).delete(deleteUser);
-
 router.route('/:userId/friends/:friendId').post(addFriendToUser);
 router.route('/:userId/friends/:friendId').delete(deleteFriendFromUser);
 

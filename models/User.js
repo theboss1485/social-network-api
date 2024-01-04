@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// This schema is for creating all the various users that use the social network API.
 const userSchema = new mongoose.Schema(
     
     {
@@ -33,6 +34,7 @@ const User = mongoose.model("User", userSchema);
 
 userSchema.set('toJSON', { virtuals: true });
 
+// This virtual method counts the number of friends that a user has.
 userSchema.virtual("friendCount").get(function() {
 
     return this.friends.length;

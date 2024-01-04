@@ -1,11 +1,12 @@
+// This is the server for my application.  
 const express = require('express');
 const routes = require('./routes');
 const db = require('./config/connection');
 
-// Here, I import the Sequelize database connection
-
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
+
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
