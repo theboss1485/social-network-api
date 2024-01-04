@@ -7,7 +7,7 @@ My motivation for building this project was to gain experience with NoSQL and Mo
 ## Table of Contents (Optional)
 
 - [Description](#description)
-- [Note to Grader](#note-to-grader)
+- [Notes to Grader](#note-to-grader)
 - [Installation](#installation)
 - [Usage](#usage)
 - [User Routes](#user-routes)
@@ -22,13 +22,15 @@ My motivation for building this project was to gain experience with NoSQL and Mo
 - [How To Contribute](#how-to-contribute)
 - [Tests](#tests)
 
-## Note To Grader
+## Notes To Grader
 
 Part of the assignment was to format the date of created thoughts and reactions using a 'getter', according to the assignment instructions.  I wasn't sure whether this meant I should use a virtual method or an instance method.  I spoke to the instructor, Matthew Miller, about it, and he said that there were comments, seemingly in the solution, that referred to the method that formatted the date as a virtual method.  Therefore, the consensus seems to be to use a virtual method to format the date.  Unfortunately, when using a virtual method, I can't make the name of the the formatted date be displayed as "createdAt".  This would conflict with the JSON property already named "createdAt" in the Thought model, and therefore throw an error.
 
+Additionally, after I had recorded and edited the walkthrough video, I discovered that I had accidentally made the API so that when the user creates a reaction to a thought, the reaction is automatically assumed to belong to the user that created the thought in the first place.  Screencastify now places a limit of 10 free recording video recording attempts on free accounts(I first noticed this on 1/2/2024).  Because I used up all 10 of my free attempts at recording the walkthrough video and had also already edited it, I decided to make it so that if the user doesn't provide a username in the request body, the system assumes the user creating the reaction is the user who created the thought.  If, however, the user does provide a username in the reaction body, the reaction is assigned to the user with that username instead.  After looking at the application requirements, I didn't see any requirements that said every reaction creation request needs to have a username in the request body.  Additionally, the provided mockup didn't give a demonstration of the reaction routes.
+
 ## Installation
 
-To start, clone my GitHub repository with the "git clone" command. In order to use this project as it currently stands, you will need to install both Insomnia and MongoDB. Insomnia can be downloaded here: [https://insomnia.rest/download](https://insomnia.rest/download). MongoDB installation instructions can be found here: [https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/).  Additionally, once you have cloned my repository and navigated to its directiory, you will need to install the necessary dependencies with the "npm install" command. Finally, you will need to create a .env file in the parent project directory and add the following line of code to it:
+To start, clone my GitHub repository with the "git clone" command. In order to use this project as it currently stands, you will need to install both Insomnia and MongoDB. Insomnia can be downloaded here: [https://insomnia.rest/download](https://insomnia.rest/download). MongoDB installation instructions can be found here: [https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/).  Additionally, once you have cloned my repository and navigated to its directiory, you will need to install the necessary dependencies with the "npm install" command. Finally, you will need to create a .env file in the root project directory and add the following line of code to it:
 
 DB_CONNECTION_STRING='mongodb://127.0.0.1:27017/social-network-api-database'
 
@@ -36,7 +38,9 @@ DB_CONNECTION_STRING='mongodb://127.0.0.1:27017/social-network-api-database'
 
 Once you have followed the installation instructions above and navigated to the project's directory in Git Bash, run the command "mongod" and press **Enter**.  Next, open a different instance of Git Bash, navigate to the project's directory, and run the commands "npm run seed" to seed the Mongo database, and "npm start" to start the server.  If the server starts successfully, you will get a message saying that API server is listening on port 3001.
 
-From here, open Insomnia and start creating routes. Here is a demonstration screenshot on running the GET localhost:3001/api/users route:![A screenshot of Insomnia, showing a run of the route to get all the users](./assets/images/get-all-users-route-screenshot.JPG)
+From here, open Insomnia and start creating routes. Here is a demonstration screenshot on running the GET localhost:3001/api/users route:
+
+![A screenshot of Insomnia, showing a run of the route to get all the users](./assets/images/get-all-users-route-screenshot.JPG)
 
 I will assume you know how to create new routes in Insomnia, and will therefore merely tell you which routes to create.  Please bear in mind that if a route contains a colon directly after a forward slash, such as like this: **localhost:3001/api/users/:id**, that means you will need to pass the parameter after the colon into the route when creating it in Insomnia.  For instance, with the above example route, here is an example of how you would pass in the ID: **localhost:3001/api/users/659482805e62643f36f6ceee**.  For more examples of this, please refer to the walkthrough video discussed in the Walkthrough Video Explanation section of this README.  Here is a list of the routes you should create:
 

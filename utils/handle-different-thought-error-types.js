@@ -1,8 +1,12 @@
 
-/*This function handles a lot of different scenarios related to errors with thought routes.*/
+/*This function handles a lot of different scenarios related to errors with thought routes.
+If the application comes upon an error that I didn't specifically handle, it displays a generic 
+error message in the response to the client.*/
 function handleDifferentThoughtErrorTypes(res, error, reaction = false){
 
     let errorMessage = undefined;
+
+    console.log(error.name);
 
     if(error.message.includes("Invalid thought ID") || error.name === "CastError"){
 
@@ -51,7 +55,7 @@ function handleDifferentThoughtErrorTypes(res, error, reaction = false){
     /*This is a generic error message for any thought-related scenarios that I didn't implement.*/
     else {
 
-        errorMessage = "Internal Server Error"
+        errorMessage = "Internal Server Error - Something went wrong.  Please wait a few minutes and try again."
         console.log(error);
         res.status(500).json({errorMessage: errorMessage, error});
     }

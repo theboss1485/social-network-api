@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const formatDate = require('../utils/formatDate.js')
+const formatDate = require('../utils/format-date.js')
 
+// This schema is for the various reactions to thoughts that users can create.
 const reactionSchema = new mongoose.Schema(
     
     {
@@ -19,16 +20,17 @@ const reactionSchema = new mongoose.Schema(
         createdAt: false
     }
 );
-
+// Here, I am turning on virtuals and disabling the _id column for the reaction schema.
 reactionSchema.set('toJSON', { virtuals: true });
-
 reactionSchema.set('_id', false); 
 
+// This virtual method formats the date for the reaction schema.
 reactionSchema.virtual('createdAtFormatted').get(function(){
 
     return formatDate(this.createdAt);
 });
 
+// This schema is for the various thoughts that users can create.
 const thoughtSchema = new mongoose.Schema(
     
     {
@@ -51,7 +53,7 @@ const thoughtSchema = new mongoose.Schema(
         id: false,
     }
 );
-
+// This virtual method formats the date for the thought schema.
 thoughtSchema.virtual('createdAtFormatted').get(function(){
 
     return formatDate(this.createdAt);
@@ -62,6 +64,7 @@ thoughtSchema.set('toJSON', { virtuals: true });
 
 const Thought = mongoose.model("Thought", thoughtSchema);
 
+// This virtual method counts the number of reactions that a thought has.
 thoughtSchema.virtual("reactionCount").get(function() {
 
     return this.reactions.length;

@@ -1,3 +1,4 @@
+// This is the server for my application.  
 const express = require('express');
 const routes = require('./routes');
 const db = require('./config/connection');

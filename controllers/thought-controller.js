@@ -1,4 +1,4 @@
-const handleDifferentThoughtErrorTypes = require('../utils/handleDifferentThoughtErrorTypes.js');
+const handleDifferentThoughtErrorTypes = require('../utils/handle-different-thought-error-types.js');
 
 const Thought = require('../models/Thought.js');
 const User = require('../models/User.js');
@@ -9,7 +9,6 @@ async function getAllThoughts(req, res){
     try {
 
         let thoughts = await Thought.find({});
-        thoughts.forEach((thought) => thought.geFo)
         res.status(200).json(thoughts);
     
     } catch (error) {
@@ -62,18 +61,11 @@ async function createThought(req, res){
                     username: req.body.username
                 });
 
-                if(newThought){
-
-                    creatorOfThought.thoughts.push(newThought);
-                    let updatedCreatorOfThought = await creatorOfThought.save();
-            
-                    res.status(201).json({message: "Thought creation successul", newThought: newThought, updatedCreatorOfThought: updatedCreatorOfThought});
-                
-                } else {
-
-                    console.log("Thought Creation Failed!!")
-                }
-
+                creatorOfThought.thoughts.push(newThought);
+                let updatedCreatorOfThought = await creatorOfThought.save();
+        
+                res.status(201).json({message: "Thought creation successul", newThought: newThought, updatedCreatorOfThought: updatedCreatorOfThought});
+        
             } else {
 
                 // If the provided username doesn't match any existing usernames, the application throws an error.
@@ -173,12 +165,26 @@ async function addReactionToThought(req, res){
     try {
 
         let thought = await Thought.findOne({_id: req.params.thoughtId});
+        let username = undefined;
         
         if(thought){
 
+            /* I decided to make it so that if a username isn't included in the request body,
+            the API assumes the desired username to be the username of the user who created the thought.
+            To see why I did this, please see the Notes to Grader section of the README.*/
+            if(req.body.username){
+
+                username = req.body.username;
+            
+            } else {
+                console.log("Thought", thought);
+    
+                username = thought.username;
+            }
+
             if(req.body.reactionBody){
 
-                let reactionData = {reactionBody: req.body.reactionBody, username: thought.username};
+                let reactionData = {reactionBody: req.body.reactionBody, username: username};
 
                 thought.reactions.push(reactionData);
                 let updatedThought = await thought.save();
@@ -205,12 +211,18 @@ async function addReactionToThought(req, res){
 // This function deletes a reaction from a thought by the reaction's ID.
 async function DeleteReactionFromThought(req, res){
 
+    let reactionToBeDeleted = undefined;
+
     try{
 
         let thought = await Thought.findOne({_id: req.params.thoughtId});
-        let reactionToBeDeleted = thought.reactions.find((reaction) => reaction.reactionId.toString() === req.params.reactionId);
+
+        if(thought){
+
+            reactionToBeDeleted = thought.reactions.find((reaction) => reaction.reactionId.toString() === req.params.reactionId);
+        }
         
-        if(thought && reactionToBeDeleted){
+        if(reactionToBeDeleted){
 
             thought.reactions = thought.reactions.filter((reaction) => reaction !== reactionToBeDeleted);
             let thoughtWithReactionDeleted = await thought.save();
@@ -225,7 +237,7 @@ async function DeleteReactionFromThought(req, res){
 
     } catch (error) {
 
-        handleDifferentThoughtErrorTypes(res, error);   
+        handleDifferentThoughtErrorTypes(res, error, true);   
     }
 }
 

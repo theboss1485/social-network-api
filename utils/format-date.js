@@ -1,7 +1,8 @@
 
 
 
-/* The Xpert Learning Assistant AI gave me the code for this function. */
+/* The Xpert Learning Assistant AI gave me the code for this function. 
+It formats the date to be more human-readable.*/
 function formatDate(date){
 
     let options = {

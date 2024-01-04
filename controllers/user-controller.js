@@ -2,7 +2,7 @@ const User = require('../models/User.js');
 const Thought = require('../models/Thought.js');
 const mongoose = require('mongoose');
 const { CastError } = mongoose.Error;
-const handleDifferentUserErrorTypes = require('../utils/handleDifferentUserErrorTypes.js');
+const handleDifferentUserErrorTypes = require('../utils/handle-different-user-error-types.js');
 
 const iodash = require('lodash');
 
@@ -105,6 +105,8 @@ async function updateUser(req, res){
                     }
                 );
 
+                /* If the user provided a username in the request body, any thoughts tied to that username
+                will be updated to contain the new username. */
                 if(req.body.username){
 
                     await Thought.updateMany({username: oldUsername},{ $set: { username: req.body.username, 'reactions.$[].username': req.body.username } });
@@ -126,22 +128,23 @@ async function updateUser(req, res){
 
             } else {
 
+                // If the system can't find a user based on the provided ID, the application throws an error.
                 throw new Error("Invalid user ID");
             }
 
         } else {
 
+            // If the user left both a username and an email address out of the request body, the application throws an error.
             throw new Error("Missing Info - Email or Username");
         }
     
     } catch(error){
 
-        console.log("Error", error);
-
         handleDifferentUserErrorTypes(res, error);
     }
 }
 
+// The following function deletes a user and its associated thoughts.
 async function deleteUser(req, res){
 
     let deletedUser = undefined;
@@ -155,6 +158,8 @@ async function deleteUser(req, res){
             let deletedThoughts = await Thought.find({username: deletedUser.username});
             let thoughtDeletionResult = await Thought.deleteMany({username: deletedUser.username});
 
+            /* Because Thought.deleteMany() will throw an error if it fails, if the program reaches the following "if"
+            condition, we can assume that the thoughts have been deleted successfully. */
             if(deletedThoughts.length !== 0){
 
                 res.status(200).json({message: "User and associated thoughts deleted successfully", deletedUser: deletedUser, 
@@ -167,6 +172,7 @@ async function deleteUser(req, res){
 
         } else {
 
+            // If the system can't find a user based on the provided ID, the application throws an error.
             throw new Error("Invalid user ID");
         } 
 
@@ -176,6 +182,7 @@ async function deleteUser(req, res){
     }
 }
 
+// The following function adds a friend to a user based on the user's ID and the friend's user ID.
 async function addFriendToUser(req, res){
 
     try {
@@ -184,30 +191,23 @@ async function addFriendToUser(req, res){
         let friend = undefined;
         let match = undefined
 
-        /*This try...catch is to replace CastErrors with my own custom error message.*/
-        try{
+        user = await User.findOne({_id: req.params.userId});
+        friend = await User.findOne({_id: req.params.friendId});
+        match = user.friends.find((friend) => friend.toString() === req.params.friendId);
 
-            user = await User.findOne({_id: req.params.userId});
-            friend = await User.findOne({_id: req.params.friendId});
-            match = user.friends.find((friend) => friend.toString() === req.params.friendId);
 
-        } catch (error) {
-
-            if(error instanceof CastError){
-
-                console.log(error)
-
-            }
-        }
         
         if(user && friend){
 
             if(req.params.userId === req.params.friendId){
 
+                /* If the provided user ID and friend ID are the same, the application throws an error. */
                 throw new Error("Duplicate user and friend ID");
 
             } else if(match !== undefined){
 
+                /* If the provided user ID and friend ID correspond to a user/friend pair where the friend is already on the user's
+                friend list, the application throws an error.*/
                 throw new Error("User and friend already friends");
 
             } else {
@@ -221,12 +221,13 @@ async function addFriendToUser(req, res){
 
         } else {
 
+            // If the application can't find a user by either the user ID or the friend ID, it will throw an error.
             throw new Error("Invalid user ID or friend ID");
         }
 
     } catch (error) {
 
-        handleDifferentUserErrorTypes(res, error)
+        handleDifferentUserErrorTypes(res, error, true)
     }
 }
 
@@ -236,25 +237,15 @@ async function deleteFriendFromUser(req, res){
     let friendToBeDeleted = undefined;
 
     try{
-
-        try{
             
-            user = await User.findOne({_id: req.params.userId});
-            friendToBeDeleted = await User.findOne({_id: req.params.friendId});
+        user = await User.findOne({_id: req.params.userId});
+        friendToBeDeleted = await User.findOne({_id: req.params.friendId});
 
-        } catch (error) {
-
-            if(error instanceof CastError){
-
-                console.log(error);
-                
-            }
-        }
-        
         if(user && friendToBeDeleted){
 
             if(req.params.userId === req.params.friendId){
 
+                /* Once again, if the provided user ID and friend ID are the same, the application throws an error. */
                 throw new Error("Duplicate user and friend ID");
             }
 
@@ -265,6 +256,7 @@ async function deleteFriendFromUser(req, res){
             friend list without the friend to be deleted.  If the two are equal, it means the friend didn't exist on the user's friend list in the first place.*/
             if(iodash.isEqual(updatedFriendsList.sort(), user.friends.sort())){
 
+                /* If the friend didn't exist on the user's friend list, the application throws an error. */
                 throw new Error("Friend not on user's friend list");
 
             } else {
@@ -277,12 +269,13 @@ async function deleteFriendFromUser(req, res){
 
         } else {
 
+            // Once again, if the application can't find a user by either the user ID or the friend ID, it will throw an error.
             throw new Error("Invalid user ID or friend ID");
         }
 
     } catch (error) {
 
-        handleDifferentUserErrorTypes(res, error)
+        handleDifferentUserErrorTypes(res, error, true)
     }
 }
 

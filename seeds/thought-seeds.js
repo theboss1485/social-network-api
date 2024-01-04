@@ -1,6 +1,7 @@
 const Thought = require('../models/Thought.js');
 const User = require('../models/User.js');
 
+// This function seeds the database with thoughts.
 async function seedThoughts(){
     
     try{
@@ -19,6 +20,9 @@ async function seedThoughts(){
     }
 }
 
+/* This function creates a thought for the purpose of seeding the databaseand also
+updates the user that the thought belongs to, so as to have the thought
+linked to that user. */
 async function createThoughtForSeedAndUpdateUser(thoughtText, username){
 
     let newThought = await Thought.create({
