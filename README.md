@@ -22,11 +22,9 @@ My motivation for building this project was to gain experience with NoSQL and Mo
 - [How To Contribute](#how-to-contribute)
 - [Tests](#tests)
 
-## Notes To Grader
+## Note To Grader
 
 Part of the assignment was to format the date of created thoughts and reactions using a 'getter', according to the assignment instructions.  I wasn't sure whether this meant I should use a virtual method or an instance method.  I spoke to the instructor, Matthew Miller, about it, and he said that there were comments, seemingly in the solution, that referred to the method that formatted the date as a virtual method.  Therefore, the consensus seems to be to use a virtual method to format the date.  Unfortunately, when using a virtual method, I can't make the name of the the formatted date be displayed as "createdAt".  This would conflict with the JSON property already named "createdAt" in the Thought model, and therefore throw an error.
-
-Additionally, after I had recorded and edited the walkthrough video, I discovered that I had accidentally made the API so that when the user creates a reaction to a thought, the reaction is automatically assumed to belong to the user that created the thought in the first place.  Screencastify now places a limit of 10 free recording video recording attempts on free accounts(I first noticed this on 1/2/2024).  Because I used up all 10 of my free attempts at recording the walkthrough video and had also already edited it, I decided to make it so that if the user doesn't provide a username in the request body, the system assumes the user creating the reaction is the user who created the thought.  If, however, the user does provide a username in the reaction body, the reaction is assigned to the user with that username instead.  After looking at the application requirements, I didn't see any requirements that said every reaction creation request needs to have a username in the request body.  Additionally, the provided mockup didn't give a demonstration of the reaction routes.
 
 ## Installation
 
