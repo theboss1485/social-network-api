@@ -160,41 +160,41 @@ async function addReactionToThought(req, res){
 
     try {
 
-        let thought = await Thought.findOne({_id: req.params.thoughtId});
+        let user = undefined;
+
         let username = undefined;
-        
-        if(thought){
 
-            /* I decided to make it so that if a username isn't included in the request body,
-            the API assumes the desired username to be the username of the user who created the thought.
-            To see why I did this, please see the Notes to Grader section of the README.*/
-            if(req.body.username){
+        if(req.body.username && req.body.reactionBody){
+            console.log("test 1")
 
-                username = req.body.username;
-            
-            } else {
+            let thought = await Thought.findOne({_id: req.params.thoughtId});
+            user = await User.findOne({username: req.body.username});
+
+            console.log("user", user);
+
+            if(user){
+
+                if(thought){
+
+                    let reactionData = {reactionBody: req.body.reactionBody, username: user.username};
     
-                username = thought.username;
-            }
+                    thought.reactions.push(reactionData);
+                    let updatedThought = await thought.save();
+                    res.status(200).json({message: "Reaction creation successful", updatedThought: updatedThought});
+    
+                } else {
+    
+                    throw new Error("Invalid thought ID");
+                }
 
-            if(req.body.reactionBody){
-
-                let reactionData = {reactionBody: req.body.reactionBody, username: username};
-
-                thought.reactions.push(reactionData);
-                let updatedThought = await thought.save();
-                res.status(200).json({message: "Reaction creation successful", updatedThought: updatedThought});
-            
             } else {
 
-                // If the user left the reaction text out of the request body, the application throws an error.
-                throw new Error("Invalid reaction body");
-            } 
+                throw new Error("Mismatched username")
+            }
 
         } else {
 
-            // If the thought ID doesn't match any existing thought IDs, the application throws an error.
-            throw new Error("Invalid thought ID");
+            throw new Error("Missing username or reaction body");
         }
 
     } catch (error) {

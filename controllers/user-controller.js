@@ -190,9 +190,11 @@ async function addFriendToUser(req, res){
 
         user = await User.findOne({_id: req.params.userId});
         friend = await User.findOne({_id: req.params.friendId});
-        match = user.friends.find((friend) => friend.toString() === req.params.friendId);
+        
 
         if(user && friend){
+
+            match = user.friends.find((friend) => friend.toString() === req.params.friendId);
 
             if(req.params.userId === req.params.friendId){
 

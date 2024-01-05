@@ -45,18 +45,23 @@ function handleDifferentThoughtErrorTypes(res, error, reaction = false){
         errorMessage = "You must provide at least one character of thought text in the request body."
         res.status(400).json({errorMessage: errorMessage});
 
-    } else if(error.message.includes("reaction body")){
-
-        errorMessage = "You must provide a reaction body of at least one character in the request body.";
-        res.status(400).json({errorMessage: errorMessage});
-
-    } else if (error.errors.thoughtText.properties.type === "maxlength" || error.errors.thoughtText.properties.type === "minlength") {
+    } else if (error.name === "ValidationError") {
 
         errorMessage = "The entered thought text must be between 1 and 280 characters.";
         res.status(422).json({errorMessage: errorMessage});
         console.log(error);
 
     /*This is a generic error message for any thought-related scenarios that I didn't implement.*/    
+    } else if(error.message === "Mismatched username"){
+
+        errorMessage = "The username you provided doesn't match any usernames on file.";
+        res.status(400).json({errorMessage: errorMessage});
+
+    } else if(error.message === "Missing username or reaction body"){
+
+        errorMessage = "You must provide both a reaction body of at least one character and a username.";
+        res.status(400).json({errorMessage: errorMessage});
+
     } else {
 
         errorMessage = "Internal Server Error - Something went wrong.  Please wait a few minutes and try again."
