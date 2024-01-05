@@ -162,8 +162,6 @@ async function addReactionToThought(req, res){
 
         let user = undefined;
 
-        let username = undefined;
-
         if(req.body.username && req.body.reactionBody){
             console.log("test 1")
 

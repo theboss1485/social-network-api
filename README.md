@@ -7,7 +7,7 @@ My motivation for building this project was to gain experience with NoSQL and Mo
 ## Table of Contents (Optional)
 
 - [Description](#description)
-- [Notes to Grader](#notes-to-grader)
+- [Note to Grader](#note-to-grader)
 - [Installation](#installation)
 - [Usage](#usage)
 - [User Routes](#user-routes)
